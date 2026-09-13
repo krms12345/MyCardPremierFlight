@@ -271,23 +271,35 @@ const bg = {
 bg.init();
 
 // Game Loop
-function loop() {
-    // Clear canvas and draw background
-    bg.draw();
-    
-    if (gameState === 'PLAYING') {
-        obstacles.update();
-        card.update();
-    }
-    
-    obstacles.draw();
-    card.draw();
-    
-    if (gameState === 'PLAYING') {
-        frames++;
-    }
-    
+let lastTime = 0;
+const targetFPS = 60;
+const frameInterval = 1000 / targetFPS;
+
+function loop(timestamp) {
     requestAnimationFrame(loop);
+    
+    if (!lastTime) lastTime = timestamp;
+    let elapsed = timestamp - lastTime;
+    
+    // Cap at target FPS
+    if (elapsed > frameInterval) {
+        lastTime = timestamp - (elapsed % frameInterval);
+        
+        // Clear canvas and draw background
+        bg.draw();
+        
+        if (gameState === 'PLAYING') {
+            obstacles.update();
+            card.update();
+        }
+        
+        obstacles.draw();
+        card.draw();
+        
+        if (gameState === 'PLAYING') {
+            frames++;
+        }
+    }
 }
 
 // Controls
@@ -357,10 +369,10 @@ restartBtn.addEventListener('click', resetGame);
 
 // Start the loop
 cardImage.onload = () => {
-    loop();
+    requestAnimationFrame(loop);
 };
 
 // Fallback if image fails to load or is already loaded
 if (cardImage.complete) {
-    loop();
+    requestAnimationFrame(loop);
 }
