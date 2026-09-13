@@ -55,6 +55,30 @@ canvas {
     transition: opacity 0.3s ease;
 }
 
+#roe-display {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    font-size: 24px;
+    font-weight: 800;
+    color: #d4a373;
+    text-shadow: 0 2px 10px rgba(0,0,0,0.5);
+    z-index: 10;
+    transition: opacity 0.3s ease;
+}
+
+#nps-display {
+    position: absolute;
+    top: 50px;
+    left: 20px;
+    font-size: 24px;
+    font-weight: 800;
+    color: #d4a373;
+    text-shadow: 0 2px 10px rgba(0,0,0,0.5);
+    z-index: 10;
+    transition: opacity 0.3s ease;
+}
+
 .screen {
     position: absolute;
     top: 0;

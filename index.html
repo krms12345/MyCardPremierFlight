@@ -12,6 +12,8 @@
         <canvas id="gameCanvas" width="400" height="600"></canvas>
         
         <div id="ui-layer">
+            <div id="roe-display">ROE: 0%</div>
+            <div id="nps-display">NPS: 0</div>
             <div id="score-display">0</div>
             
             <div id="start-screen" class="screen active">
@@ -33,6 +35,14 @@
                         <span>Best</span>
                         <span id="best-score">0</span>
                     </div>
+                    <div class="score-item">
+                        <span>ROE</span>
+                        <span id="final-roe">0%</span>
+                    </div>
+                    <div class="score-item">
+                        <span>NPS</span>
+                        <span id="final-nps">0</span>
+                    </div>
                 </div>
                 <button id="restart-btn" class="premium-btn">Play Again</button>
             </div>
@@ -41,6 +51,9 @@
     
     <!-- Hidden image for canvas drawing -->
     <img id="cardImage" src="mycard-premier-digital-card-1536x969.png" style="display: none;" alt="MyCard">
+    <img id="appleImage" src="apple.png" style="display: none;" alt="Apple Pay">
+    <img id="googleImage" src="google.jpg" style="display: none;" alt="Google Pay">
+    <img id="posImage" src="pos.png" style="display: none;" alt="POS Terminal">
 
     <script src="script.js"></script>
 </body>
