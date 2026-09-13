@@ -24,6 +24,16 @@ let score = 0;
 let bestScore = localStorage.getItem('myCardBestScore') || 0;
 let gameState = 'START'; // START, PLAYING, GAMEOVER
 
+let milestoneTimer = 0;
+let milestoneText = '';
+
+function checkMilestone(oldScore, newScore) {
+    if (newScore > 0 && Math.floor(newScore / 20) > Math.floor(oldScore / 20)) {
+        milestoneText = '+1% ROE';
+        milestoneTimer = 120; // Show for 2 seconds (60fps)
+    }
+}
+
 // Physics
 const gravity = 0.25;
 const jumpStrength = -5.5;
@@ -211,7 +221,9 @@ const obstacles = {
                 
                 if (p.isBonus) {
                     if (!p.collected) {
+                        let oldScore = score;
                         score += 5; // Bonus points!
+                        checkMilestone(oldScore, score);
                         p.collected = true;
                         scoreDisplay.innerText = score;
                     }
@@ -222,7 +234,9 @@ const obstacles = {
             
             // Score update for dodging obstacle
             if (p.x + this.width < card.x && !p.passed && !p.isBonus) {
+                let oldScore = score;
                 score++;
+                checkMilestone(oldScore, score);
                 p.passed = true;
                 scoreDisplay.innerText = score;
             }
@@ -296,6 +310,22 @@ function loop(timestamp) {
         obstacles.draw();
         card.draw();
         
+        if (milestoneTimer > 0) {
+            ctx.save();
+            ctx.fillStyle = `rgba(212, 163, 115, ${Math.min(1, milestoneTimer / 30)})`; // Fades out
+            ctx.font = 'bold 36px Outfit, sans-serif';
+            ctx.textAlign = 'center';
+            ctx.shadowColor = 'rgba(0, 0, 0, 0.8)';
+            ctx.shadowBlur = 10;
+            ctx.shadowOffsetY = 2;
+            ctx.fillText(milestoneText, CANVAS_WIDTH / 2, CANVAS_HEIGHT / 3 - (120 - milestoneTimer) * 0.5);
+            ctx.restore();
+            
+            if (gameState === 'PLAYING') {
+                milestoneTimer--;
+            }
+        }
+        
         if (gameState === 'PLAYING') {
             frames++;
         }
@@ -355,6 +385,7 @@ function gameOver() {
 function resetGame() {
     score = 0;
     frames = 0;
+    milestoneTimer = 0;
     scoreDisplay.innerText = score;
     card.reset();
     obstacles.reset();
